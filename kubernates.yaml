@@ -21,7 +21,7 @@ kind: Deployment
 metadata:
   name: kubernates-app-volume
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: kubernates-app-volume
@@ -39,5 +39,9 @@ spec:
             - mountPath: /app/story
               name: story-volume
       volumes:
+        # - name: story-volume
+        #   emptyDir: {}
         - name: story-volume
-          emptyDir: {}
+          hostPath:
+            path: /data
+            type: DirectoryOrCreate
