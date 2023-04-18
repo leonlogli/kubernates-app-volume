@@ -1,0 +1,43 @@
+# Service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernates-app-volume
+spec:
+  selector:
+    app: kubernates-app-volume
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
+
+---
+# Deployment
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernates-app-volume
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kubernates-app-volume
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: kubernates-app-volume
+        tier: backend
+    spec:
+      containers:
+        - name: kubernates-app-volume
+          image: leonlogli/kubernates-app-volume
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          emptyDir: {}
